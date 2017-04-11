@@ -34,14 +34,10 @@ target_link_libraries ( elx ${SimpleITK_LIBRARIES} )
 add_executable ( tfx tfx.cxx )
 target_link_libraries ( tfx ${SimpleITK_LIBRARIES} )
 
-add_executable ( SimpleGaussianFunctional SimpleGaussianFunctional.cxx )
-target_link_libraries ( SimpleGaussianFunctional ${SimpleITK_LIBRARIES} )
-
 add_executable ( BufferImportExport BufferImportExport.cxx )
 target_link_libraries ( BufferImportExport ${SimpleITK_LIBRARIES} )
 
 # Add subdirectories
-add_subdirectory(Segmentation)
 add_subdirectory(ITKIntegration)
 
 # Test data directory
@@ -51,22 +47,9 @@ set(ITK_TEST_DRIVER  "$<TARGET_FILE:itkTestDriver>")
 
 
 # Add example organized sub-directories with multiple languages
-add_subdirectory(SimpleGaussian)
-add_subdirectory(ImageRegistrationMethod1)
-add_subdirectory(ImageRegistrationMethod2)
-add_subdirectory(ImageRegistrationMethod3)
-add_subdirectory(ImageRegistrationMethod4)
-add_subdirectory(ImageRegistrationMethodBSpline1)
-add_subdirectory(ImageRegistrationMethodBSpline2)
-add_subdirectory(ImageRegistrationMethodDisplacement1)
-add_subdirectory(ImageRegistrationMethodExhaustive)
-add_subdirectory(N4BiasFieldCorrection)
 add_subdirectory(DicomSeriesReader)
 add_subdirectory(DicomImagePrintTags)
 add_subdirectory(DicomSeriesReadModifyWrite)
-add_subdirectory(FilterProgressReporting)
-add_subdirectory(DemonsRegistration1)
-add_subdirectory(DemonsRegistration2)
 
 macro(add_language_subdirectory lang)
   string(TOUPPER ${lang} LANG)
@@ -76,9 +59,6 @@ macro(add_language_subdirectory lang)
 endmacro()
 
 if ( BUILD_TESTING )
-  add_subdirectory( test )
-
   add_language_subdirectory( CSharp )
   add_language_subdirectory( Python )
-
 endif()

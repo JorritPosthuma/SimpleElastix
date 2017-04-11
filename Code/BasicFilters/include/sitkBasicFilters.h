@@ -23,9 +23,6 @@
 #include "sitkInterpolator.h"
 #include "sitkRandomSeed.h"
 
-// todo this should be moved to a more local place
-#include "sitkTransform.h"
-
 #if defined( SITKDLL )
   #ifdef SimpleITKBasicFilters0_EXPORTS
     #define SITKBasicFilters0_EXPORT SITK_ABI_EXPORT

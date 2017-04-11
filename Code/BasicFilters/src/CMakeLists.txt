@@ -106,17 +106,6 @@ list(APPEND SimpleITKBasicFiltersGeneratedSource_ITKCommon
   sitkHashImageFilter.cxx )
 set(SimpleITKBasicFiltersGeneratedSource_ITKCommon ${SimpleITKBasicFiltersGeneratedSource_ITKCommon} CACHE INTERNAL "")
 
-list(APPEND SimpleITKBasicFiltersGeneratedSource_ITKTransform
-  sitkBSplineTransformInitializerFilter.cxx )
-set(SimpleITKBasicFiltersGeneratedSource_ITKTransform ${SimpleITKBasicFiltersGeneratedSource_ITKTransform} CACHE INTERNAL "")
-
-list(APPEND SimpleITKBasicFiltersGeneratedSource_ITKRegistrationCommon
-  sitkCenteredTransformInitializerFilter.cxx
-  sitkCenteredVersorTransformInitializerFilter.cxx
-  sitkLandmarkBasedTransformInitializerFilter.cxx )
-set(SimpleITKBasicFiltersGeneratedSource_ITKRegistrationCommon ${SimpleITKBasicFiltersGeneratedSource_ITKRegistrationCommon} CACHE INTERNAL "")
-
-
 #
 # Module based libraries
 #
@@ -154,47 +143,48 @@ endforeach()
 list ( SORT SimpleITKBasicFiltersGeneratedSource )
 
 # add additional files which may depend on Filters0-N
-list ( APPEND SimpleITKBasicFiltersSource ${SimpleITKBasicFiltersGeneratedSource} sitkAdditionalProcedures.cxx )
+list ( APPEND SimpleITKBasicFiltersSource ${SimpleITKBasicFiltersGeneratedSource} )
 
 list ( LENGTH SimpleITKBasicFiltersSource _length )
 math( EXPR _end_range "${_length} - 1 " )
 
+if( ${_end_range} GREATER 0 )
+  # Break all these source files into a bunch of libraries base on every
+  # n files in the list.
+  set ( _stride 25 )
+  set ( _library_i 1 )
+  foreach ( _start RANGE 0 ${_end_range} ${_stride} )
 
-# Break all these source files into a bunch of libraries base on every
-# n files in the list.
-set ( _stride 25 )
-set ( _library_i 1 )
-foreach ( _start RANGE 0 ${_end_range} ${_stride} )
+    math( EXPR _library_i "${_library_i} " )
 
-  math( EXPR _library_i "${_library_i} " )
+    # compute the end of the range ensuring that the inclusive range
+    # [_start, _end] is all valid indexes
+    math( EXPR _end "${_start} + ${_stride} - 1" )
+    if ( ${_end} VERSION_GREATER ${_end_range} OR
+        ${_end} VERSION_EQUAL ${_end_range} )
+      math( EXPR _end "${_end_range}" )
+      set(_last 1)
+    endif()
 
-  # compute the end of the range ensuring that the inclusive range
-  # [_start, _end] is all valid indexes
-  math( EXPR _end "${_start} + ${_stride} - 1" )
-  if ( ${_end} VERSION_GREATER ${_end_range} OR
-      ${_end} VERSION_EQUAL ${_end_range} )
-    math( EXPR _end "${_end_range}" )
-    set(_last 1)
-  endif()
+    # extract out the range into SRC
+    set ( SRC "" )
+    foreach( _j RANGE ${_start} ${_end} )
+      list ( GET SimpleITKBasicFiltersSource ${_j} _v )
+      list ( APPEND SRC ${_v} )
+    endforeach()
 
-  # extract out the range into SRC
-  set ( SRC "" )
-  foreach( _j RANGE ${_start} ${_end} )
-    list ( GET SimpleITKBasicFiltersSource ${_j} _v )
-    list ( APPEND SRC ${_v} )
-  endforeach()
+    add_filter_library(SimpleITKBasicFilters${_library_i} SRC ITK_MODULES_ENABLED)
 
-  add_filter_library(SimpleITKBasicFilters${_library_i} SRC ITK_MODULES_ENABLED)
+    if(_last)
 
-  if(_last)
-
-    set(_last_SimpleITK_LIBRARIES ${SimpleITK_LIBRARIES})
-    list(REMOVE_ITEM _last_SimpleITK_LIBRARIES SimpleITKBasicFilters${_library_i})
-    # the last library include additional cxx files which may depend on
-    # other filter libraries
-    target_link_libraries ( SimpleITKBasicFilters${_library_i}
-      PRIVATE ${_last_SimpleITK_LIBRARIES} )
-  endif()
+      set(_last_SimpleITK_LIBRARIES ${SimpleITK_LIBRARIES})
+      list(REMOVE_ITEM _last_SimpleITK_LIBRARIES SimpleITKBasicFilters${_library_i})
+      # the last library include additional cxx files which may depend on
+      # other filter libraries
+      target_link_libraries ( SimpleITKBasicFilters${_library_i}
+        PRIVATE ${_last_SimpleITK_LIBRARIES} )
+    endif()
 
 
-endforeach ()
+  endforeach ()
+endif()

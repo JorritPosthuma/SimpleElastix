@@ -56,7 +56,7 @@ int main( int , char *[] )
   // at this point img, contains the same buffer as in
 
   // use some useful filters in ITK
-  img = sitk::GrayscaleErode( img , 3 );
+  img = sitk::RescaleIntensity( img , 64, 128 );
 
   sitk::Show( img );
 

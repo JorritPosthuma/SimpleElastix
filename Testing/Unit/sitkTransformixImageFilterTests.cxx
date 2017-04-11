@@ -21,6 +21,7 @@ TEST( TransformixImageFilter, ObjectOrientedInterface )
   ElastixImageFilter silx;
   silx.SetFixedImage( fixedImage );
   silx.SetMovingImage( movingImage );
+  silx.SetParameter( "MaximumNumberOfIterations", "1.0" );
   silx.Execute();
 
   TransformixImageFilter stfx;
@@ -52,6 +53,7 @@ TEST( TransformixImageFilter, ProceduralInterface )
   ElastixImageFilter silx;
   silx.SetFixedImage( fixedImage );
   silx.SetMovingImage( movingImage );
+  silx.SetParameter( "MaximumNumberOfIterations", "1.0" );
   silx.Execute();
 
   std::string outputDirectory = ".";
@@ -92,7 +94,7 @@ TEST( TransformixImageFilter, Transformation4D )
 
   ElastixImageFilter silx;
   silx.SetParameterMap( "groupwise" );
-  silx.SetParameter( "MaximumNumberOfIterations", "8.0" );
+  silx.SetParameter( "MaximumNumberOfIterations", "1.0" );
   silx.SetParameter( "FinalGridSpacingInPhysicalUnits", "32.0" );
   silx.SetFixedImage( fixedImage );
   silx.SetMovingImage( movingImage1 );

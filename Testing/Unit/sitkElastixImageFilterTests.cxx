@@ -3,7 +3,6 @@
 #include "sitkElastixImageFilter.h"
 #include "sitkImageFileReader.h"
 #include "sitkImageFileWriter.h"
-#include "sitkBinaryThresholdImageFilter.h"
   
 #include <fstream>
 
@@ -31,26 +30,31 @@ TEST( ElastixImageFilter, DefaultParameterMaps )
   EXPECT_NO_THROW( silx.SetMovingImage( movingImage ) );
 
   EXPECT_NO_THROW( silx.SetParameterMap( GetDefaultParameterMap( "translation" ) ) );
+  EXPECT_NO_THROW( silx.SetParameter( "MaximumNumberOfIterations", "1.0" ) );
   EXPECT_NO_THROW( silx.Execute() );
   EXPECT_NO_THROW( resultImage = silx.GetResultImage() );
   EXPECT_FALSE( silxIsEmpty( resultImage ) );
 
   EXPECT_NO_THROW( silx.SetParameterMap( GetDefaultParameterMap( "rigid" ) ) );
+  EXPECT_NO_THROW( silx.SetParameter( "MaximumNumberOfIterations", "1.0" ) );
   EXPECT_NO_THROW( silx.Execute() );
   EXPECT_NO_THROW( resultImage = silx.GetResultImage() );
   EXPECT_FALSE( silxIsEmpty( resultImage ) );
 
   EXPECT_NO_THROW( silx.SetParameterMap( GetDefaultParameterMap( "affine" ) ) );
+  EXPECT_NO_THROW( silx.SetParameter( "MaximumNumberOfIterations", "1.0" ) );
   EXPECT_NO_THROW( silx.Execute() );
   EXPECT_NO_THROW( resultImage = silx.GetResultImage() );
   EXPECT_FALSE( silxIsEmpty( resultImage ) );
 
   EXPECT_NO_THROW( silx.SetParameterMap( GetDefaultParameterMap( "nonrigid" ) ) );
+  EXPECT_NO_THROW( silx.SetParameter( "MaximumNumberOfIterations", "1.0" ) );
   EXPECT_NO_THROW( silx.Execute() );
   EXPECT_NO_THROW( resultImage = silx.GetResultImage() );
   EXPECT_FALSE( silxIsEmpty( resultImage ) );
 
   EXPECT_NO_THROW( silx.SetParameterMap( GetDefaultParameterMap( "bspline" ) ) );
+  EXPECT_NO_THROW( silx.SetParameter( "MaximumNumberOfIterations", "1.0" ) );
   EXPECT_NO_THROW( silx.Execute() );
   EXPECT_NO_THROW( resultImage = silx.GetResultImage() );
   EXPECT_FALSE( silxIsEmpty( resultImage ) );
@@ -65,6 +69,7 @@ TEST( ElastixImageFilter, Registration2D )
   ElastixImageFilter silx;
   EXPECT_NO_THROW( silx.SetFixedImage( fixedImage ) );
   EXPECT_NO_THROW( silx.SetMovingImage( movingImage ) );
+  EXPECT_NO_THROW( silx.SetParameter( "MaximumNumberOfIterations", "1.0" ) );
   EXPECT_NO_THROW( resultImage = silx.Execute() );
   EXPECT_FALSE( silxIsEmpty( resultImage ) );
 }
@@ -81,6 +86,7 @@ TEST( ElastixImageFilter, Masks )
 
   ElastixImageFilter silx;
   EXPECT_NO_THROW( silx.SetParameter( "ImageSampler", "RandomSparseMask" ) );
+  EXPECT_NO_THROW( silx.SetParameter( "MaximumNumberOfIterations", "1.0" ) );
   EXPECT_NO_THROW( silx.SetFixedImage( fixedImage ) );
   EXPECT_NO_THROW( silx.SetFixedMask( fixedMask ) );
   EXPECT_NO_THROW( silx.SetMovingImage( movingImage ) );
@@ -291,6 +297,7 @@ TEST( ElastixImageFilter, MultipleFixedAndMovingImages )
   silx.AddParameter( "FixedImagePyramid", silx.GetParameter( 0, "FixedImagePyramid" ) );
   silx.AddParameter( "MovingImagePyramid", silx.GetParameter( 0, "MovingImagePyramid" ) );
   silx.AddParameter( "Metric", silx.GetParameter( 0, "Metric" ) );
+  EXPECT_NO_THROW( silx.SetParameter( "MaximumNumberOfIterations", "1.0" ) );
 
   EXPECT_NO_THROW( silx.AddFixedImage( fixedImage0 ) );
   EXPECT_NO_THROW( silx.AddFixedImage( fixedImage1 ) );
@@ -324,6 +331,7 @@ TEST( ElastixImageFilter, RegistrationWithPointSets )
 
   ElastixImageFilter silx;
   silx.SetParameterMap( "translation" );
+  EXPECT_NO_THROW( silx.SetParameter( "MaximumNumberOfIterations", "1.0" ) );
   silx.SetParameter( "Registration", "MultiMetricMultiResolutionRegistration" );
   silx.AddParameter( "Metric", "CorrespondingPointsEuclideanDistanceMetric" );
   silx.SetParameter( "Metric0Weight", "0.0" );
@@ -347,6 +355,7 @@ TEST( ElastixImageFilter, InitialTransform )
   ElastixImageFilter silx1;
   EXPECT_NO_THROW( silx1.SetFixedImage( fixedImage ) );
   EXPECT_NO_THROW( silx1.SetMovingImage( movingImage ) );
+  EXPECT_NO_THROW( silx1.SetParameter( "MaximumNumberOfIterations", "1.0" ) );
   EXPECT_NO_THROW( resultImage1 = silx1.Execute() );
   EXPECT_FALSE( silxIsEmpty( resultImage1 ) );
   WriteParameterFile( silx1.GetTransformParameterMap()[ 0 ], initialTransformParameterFileName );
@@ -354,6 +363,7 @@ TEST( ElastixImageFilter, InitialTransform )
   ElastixImageFilter silx2;
   EXPECT_NO_THROW( silx2.SetFixedImage( fixedImage ) );
   EXPECT_NO_THROW( silx2.SetMovingImage( movingImage ) );
+  EXPECT_NO_THROW( silx2.SetParameter( "MaximumNumberOfIterations", "1.0" ) );
   EXPECT_NO_THROW( silx2.SetInitialTransformParameterFileName( initialTransformParameterFileName ) );
   EXPECT_NO_THROW( resultImage2 = silx2.Execute() );
   EXPECT_FALSE( silxIsEmpty( resultImage2 ) );
@@ -369,6 +379,7 @@ TEST( ElastixImageFilter, InverseTransform )
   ElastixImageFilter::ParameterMapVectorType inverseParameterMapVector;
   EXPECT_NO_THROW( silx.SetFixedImage( fixedImage ) );
   EXPECT_NO_THROW( silx.SetMovingImage( movingImage ) );
+  EXPECT_NO_THROW( silx.SetParameter( "MaximumNumberOfIterations", "1.0" ) );
   EXPECT_NO_THROW( resultImage = silx.Execute() );
   EXPECT_FALSE( silxIsEmpty( resultImage ) );
   EXPECT_THROW( inverseParameterMapVector = silx.GetInverseTransformParameterMap(), GenericException );
@@ -387,6 +398,7 @@ TEST( ElastixImageFilter, SameFixedImageForMultipleRegistrations )
   ElastixImageFilter silx;
   EXPECT_NO_THROW( silx.SetFixedImage( fixedImage ) );
   EXPECT_NO_THROW( silx.SetMovingImage( movingImage1 ) );
+  EXPECT_NO_THROW( silx.SetParameter( "MaximumNumberOfIterations", "1.0" ) );
   EXPECT_NO_THROW( resultImage1 = silx.Execute() );
   EXPECT_FALSE( silxIsEmpty( resultImage1 ) );
   EXPECT_NO_THROW( silx.SetMovingImage( movingImage2 ) );
@@ -403,6 +415,7 @@ TEST( ElastixImageFilter, Registration3D )
   ElastixImageFilter silx;
   EXPECT_NO_THROW( silx.SetFixedImage( fixedImage ) );
   EXPECT_NO_THROW( silx.SetMovingImage( movingImage ) );
+  EXPECT_NO_THROW( silx.SetParameter( "MaximumNumberOfIterations", "1.0" ) );
   EXPECT_NO_THROW( resultImage = silx.Execute() );
   EXPECT_FALSE( silxIsEmpty( resultImage ) );
 }
@@ -419,6 +432,7 @@ TEST( ElastixImageFilter, Registration4D )
   silx.SetParameterMap( "groupwise" );
   silx.SetParameter("MaximumNumberOfIterations", "8.0");
   silx.SetParameter("FinalGridSpacingInPhysicalUnits", "32.0");
+  EXPECT_NO_THROW( silx.SetParameter( "MaximumNumberOfIterations", "1.0" ) );
   EXPECT_NO_THROW( silx.SetFixedImage( fixedImage ) );
   EXPECT_NO_THROW( silx.SetMovingImage( movingImage ) );
   EXPECT_NO_THROW( resultImage = silx.Execute() );

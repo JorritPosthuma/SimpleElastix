@@ -19,8 +19,6 @@
 #include "SimpleITK.h"
 #include "SimpleITKTestHarness.h"
 
-#include "sitkTransformCompare.h"
-
 #include "itksys/Process.h"
 #include <iostream>
 
@@ -294,33 +292,6 @@ int main(int argc, char *argv[])
     {
     result = TestDriverInvokeProcess( po.args );
     }
-
-  if( result==0 )
-    {
-
-    // compare transforms
-    for (size_t i = 0; i < regressionTestParameters.transformTestList.size(); ++i )
-      {
-      const char * transformFileName =  regressionTestParameters.transformTestList[i].transform;
-      const char * baselineFileName = regressionTestParameters.transformTestList[i].displacement;
-      const float tolerance = regressionTestParameters.transformTestList[i].tolerance;
-      std::cout << "Reading test transform: \"" <<  transformFileName << "\"..." << std::endl;
-      sitk::Transform transform = sitk::ReadTransform(transformFileName);
-
-      std::cout << "Reading baseline displacement: \"" << baselineFileName << "\"..." << std::endl;
-      sitk::Image baseline = sitk::ReadImage(baselineFileName);
-
-      TransformCompare compare;
-      compare.SetTolerance(tolerance);
-      if (!compare.Compare(transform, baseline))
-        {
-        result += 1;
-        }
-      }
-
-
-    }
-
 
   return result;
 }

@@ -166,7 +166,7 @@ set ( SimpleITK_INCLUDE_DIRS
       ${CMAKE_BINARY_DIR}/Code/Common/include
       )
 
-set ( SimpleITK_LIBRARIES SimpleITKCommon SimpleITKIO SimpleITKRegistration ElastixImageFilter TransformixImageFilter )
+set ( SimpleITK_LIBRARIES SimpleITKCommon SimpleITKIO ElastixImageFilter TransformixImageFilter )
 
 if (SimpleITK_EXPLICIT_INSTANTIATION)
   list ( APPEND SimpleITK_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/Code/Explicit/include )

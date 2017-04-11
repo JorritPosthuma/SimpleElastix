@@ -7,7 +7,6 @@ include(sitkUseGTest)
 set ( SimpleITKUnitTestSourceBase
   SimpleITKTestHarness.cxx
   sitkImageCompare.cxx
-  sitkTransformCompare.cxx
 )
 add_library ( SimpleITKUnitTestBase STATIC ${SimpleITKUnitTestSourceBase} )
 add_dependencies( SimpleITKUnitTestBase BasicFiltersSourceCode  )
@@ -38,15 +37,12 @@ sitk_install_exported_target(sitkCompareDriver)
 set ( SimpleITKUnitTestSource
   sitkImageTests.cxx
   sitkCommonTests.cxx
-  sitkImageRegistrationMethodTests.cxx
   sitkImageIOTests.cxx
   sitkTypeListsTests.cxx
   sitkBasicFiltersTests.cxx
   sitkLabelStatisticsTest.cxx
-  sitkTransformToDisplacementFieldFilterTest.cxx
   sitkOperatorTests.cxx
   sitkExceptionsTests.cxx
-  sitkTransformTests.cxx
   sitkImportImageTest.cxx
   itkHashImageFilterTest.cxx
   itkSliceImageFilterTest.cxx

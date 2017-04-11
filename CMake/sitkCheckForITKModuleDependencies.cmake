@@ -16,17 +16,11 @@
 #
 list(APPEND _SITK_REQUIRED_ITK_MODULES
   ITKCommon
-  ITKDisplacementField
   ITKIOGDCM
   ITKIOImageBase
-  ITKIOTransformBase
   ITKImageCompose
   ITKImageIntensity
   ITKLabelMap
-  ITKMetricsv4
-  ITKOptimizersv4
-  ITKRegistrationMethodsv4
-  ITKTransform
 )
 
 foreach(itkDependency ${_SITK_REQUIRED_ITK_MODULES})
