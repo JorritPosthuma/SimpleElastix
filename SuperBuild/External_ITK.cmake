@@ -83,10 +83,12 @@ ExternalProject_Add(${proj}
   -DITKGroup_IO:BOOL=ON
   -DITK_BUILD_DEFAULT_MODULES:BOOL=OFF
   -DModule_ITKDistanceMap:BOOL=ON
+  -DModule_ITKImageFusion:BOOL=ON
   -DModule_ITKLabelMap:BOOL:=ON
   -DModule_ITKMathematicalMorphology:BOOL=ON
   -DModule_ITKOptimizers:BOOL=ON
   -DModule_ITKOptimizersv4:BOOL=ON
+  -DModule_ITKRegistrationCommon:BOOL=ON
   -DModule_ITKVideoIO:BOOL=ON
   -DITK_USE_GIT_PROTOCOL:BOOL=${ITK_USE_GIT_PROTOCOL}
   BUILD_COMMAND ${BUILD_COMMAND_STRING}
